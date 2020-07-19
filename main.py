@@ -278,64 +278,11 @@ def evaluate(cfg):
     end = time.time()
     print("test time: %0.1fmin" % ((end - start) / 60))
 
-
-def demo(cfg, detector):
-    from dps.data.getitem import ListImageLoader
-
-    np.random.seed(cfg.seed)
-    DEVICE = torch.device("cuda:{}".format(cfg.gpu_ids[0])) if len(cfg.gpu_ids) > 0 else torch.device("cpu")
-    # logger
-    logger = Logger(cfg.expr_dir, cfg.display)
-
-    # ---------------------------------------------------------------------------------------------------------------
-    # initialize network here.
-    if cfg.is_test:
-        detector.to(DEVICE)
-
-    if cfg.load_ckpt:
-        print("load checkpoint %s" % (cfg.load_ckpt))
-        checkpoint = torch.load(cfg.load_ckpt, map_location=DEVICE)
-        detector.load_state_dict(checkpoint['model'], strict=True)
-        print('load model successfully!')
-    else:
-        print('load empty checkpoint!')
-
-    detector.evaluate()  # NOTE: important
-
-    dataset = ListImageLoader('/home/caffe/code/person-search-pth/cache/demo/prw')
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=False,
-                                             num_workers=cfg.n_worker)
-    gallery_boxes = []  # len(gallery_boxes)=num_classes
-    gallery_features = []
-
-    print("\ndemo extracting gallery features ... ")
-    img_index = 0
-    for idx, images in enumerate(dataloader):
-        images = list(images.split(1, dim=0))
-        target = None
-        with torch.no_grad():
-            rois = detector(images, target)
-
-            for img, roi in zip(images, rois):
-                box_and_prob = torch.cat([roi['boxes'], roi['scores'][:, None]], dim=1)
-                util.write_img_with_boxes(img.squeeze(0), box_and_prob, cfg.pixel_means,
-                                          file_name='frame{}.jpg'.format(img_index))
-                img_index += 1
-            # for roi in rois:
-            #     box_and_prob = torch.cat([roi['boxes'], roi['scores'][:, None]], dim=1)
-            #     gallery_boxes.append(box_and_prob.cpu().numpy())
-            #     gallery_features.append(roi['feats'].cpu().numpy())
-
-        sys.stdout.write('im_detect: {:d}/{:d}   \r' \
-                         .format(idx + 1, len(dataloader) + 1))
-
-
 if __name__ == '__main__':
     cfg = Config().parse()
     if cfg.is_test:
         with torch.no_grad():
             evaluate(cfg)
-            # demo(cfg, detector)
     else:
         shutil.copy(inspect.getfile(main), cfg.expr_dir)
         main(cfg)

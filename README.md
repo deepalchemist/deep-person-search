@@ -1,7 +1,7 @@
 Person search
 
-This repository implements the widely used baseline OIM [1], NAE [4].
-Meanwhile, we develop a baseline with high performance.
+This repository implements the widely used baseline OIM [1], and NAE [4].
+Meanwhile, we develop a baseline model with high performance.
 
 - Separating detection and re-ID head on the top of model
 - PK sampling for training re-ID head 
@@ -24,10 +24,7 @@ Meanwhile, we develop a baseline with high performance.
 - Visualizing ranking list in test
 - A technological report for this repository
 
-[1] Joint Detection and Identification Feature Learning for Person Search. In CVPR 2017.
-
-[2] Person Re-Identification in the Wild. In CVPR 2017.
-
-[3] Query-guided End-to-End Person Search. In CVPR 2019.
-
-[4] Norm-Aware Embedding for Efficient Person Search. In CVPR 2020.
+[1] Joint Detection and Identification Feature Learning for Person Search. In CVPR 2017.<br>
+[2] Person Re-Identification in the Wild. In CVPR 2017.<br>
+[3] Query-guided End-to-End Person Search. In CVPR 2019.<br>
+[4] Norm-Aware Embedding for Efficient Person Search. In CVPR 2020.<br>
