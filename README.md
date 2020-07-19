@@ -18,6 +18,8 @@ Meanwhile, we develop a baseline model with high performance.
 - Visualization tools (proposals, losses in training)
 - High performance baseline.
 
+![img_with_rois](./image/rois.png)
+
 ##### TODO
 - DistributedDataParallel
 - Trained model and performance
