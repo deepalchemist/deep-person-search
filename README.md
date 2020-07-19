@@ -1,4 +1,4 @@
-### A PyTorch based strong baseline for Person search
+## A PyTorch based strong baseline for Person search
 This repository develops a baseline model with high performance, and 
 implements the widely used baseline OIM [1], and NAE [4].
 
@@ -7,7 +7,7 @@ implements the widely used baseline OIM [1], and NAE [4].
 - Data Augmentation (paste the same person into different backgrounds)
 - Warm-up training 
 
-#### About this repository
+### About this repository
 - It is pure PyTorch code, which requires the PyTorch version >= 1.1.0
 - It supports multi-image batch training.
 - End-to-end training and evaluation. Both PRW and CUHK-SYSU are supported.
@@ -18,7 +18,7 @@ implements the widely used baseline OIM [1], and NAE [4].
 
 ![img_with_rois](./image/rois.png)
 
-##### Preparation
+### Preparation
 
 - Build environment and clone repository 
 ```
@@ -26,10 +26,10 @@ conda env create -f environment.yml
 git clone https://github.com/DeepAlchemist/deep-person-search.git && cd deep-person-search
 ```
     
-- Download ![PRW](https://github.com/liangzheng06/PRW-baseline) and ![CUHK-SYSU](https://github.com/ShuangLI59/person_search)
-to path_to_your_data and set --data_root to path_to_your_data in the config file
+- Download [PRW](https://github.com/liangzheng06/PRW-baseline) and [CUHK-SYSU](https://github.com/ShuangLI59/person_search)
+to `path_to_your_data` and set `--data_root` to `path_to_your_data` in the config file.
 
-##### Training & Evaluation
+### Training & Evaluation
 
 - Training
 
@@ -50,7 +50,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
     --load_ckpt "path_to_your_checkpoint" \
 ```
 
-#### TODO
+### TODO
 - DistributedDataParallel
 - Trained model and performance
 - Supporting more SOTA methods
