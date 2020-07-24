@@ -26,7 +26,7 @@ conda env create -f environment.yml
 git clone https://github.com/DeepAlchemist/deep-person-search.git && cd deep-person-search
 ```
 
-- Download [PRW](https://github.com/liangzheng06/PRW-baseline) and [CUHK-SYSU](https://github.com/ShuangLI59/person_search)
+- Download [PRW](https://github.com/liangzheng06/PRW-baseline) and [CUHK-SYSU](https://github.com/ShuangLI59/person_search) (also named SSM)
 to `path_to_your_data`.
 
 - In the config file `./lib/cfg/config.py`, change `--data_root` to `path_to_your_data`, 
@@ -41,7 +41,7 @@ to `deep-person-search/cache/pretrained_model/`
 
 ```
 CUDA_VISIBLE_DEVICES=0 python main.py \
-    --benchmark prw --batch_size 5 \
+    --benchmark ssm --batch_size 5 \
     --backbone bsl --in_level C5 --cls_type oim \
     --lr 0.003 --warmup_epochs 1 --max_epoch 7 \
     --suffix "" 
@@ -52,7 +52,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py \
 
 ```
 CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
-    --benchmark prw --eval_batch_size 5 \
+    --benchmark ssm --eval_batch_size 5 \
     --backbone bsl --in_level C5 --cls_type oim \
     --load_ckpt "absolute_path_to_your_checkpoint" \
 ```
@@ -63,17 +63,17 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 | |     CUHK-SYSU   | | PRW ||
 | ---- |  :----:  | :----:  | :----:  | :----:  |
 | Method |  mAP   | rank1  | mAP   | rank1  |
-| OIM | [88.1]()  | 89.2 |
-| NAE | [89.8]()  | 90.7 |
+| OIM | [88.1](https://drive.google.com/file/d/1Im4o0d7hytno-aycSDPHgNkxnJN785v0/view?usp=sharing)  | 89.2 |
+| NAE | [89.8](https://drive.google.com/file/d/1mCCEnvwQC8Ckn7ElIJFMGqvfZMD6MX1P/view?usp=sharing)  | 90.7 |
 | baseline | [90.0](https://drive.google.com/file/d/17ViFt0rFNXupSNri1DvEhSFpebtqa4Xl/view?usp=sharing) | 91.0 |
 
-
+The download link of the trained models are available in the table. Note that all the models are trained with image size of `600x1000`, the larger image size, e.g., `900x1500` would yield better performance.
 
 
 
 ### TODO
 - DistributedDataParallel
-- Trained model and performance
+- Trained model and performance on prw
 - Training with larger image size, i.e., 900x1500
 - Supporting more SOTA methods
 - Visualizing ranking list in test
