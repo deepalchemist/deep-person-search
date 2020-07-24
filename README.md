@@ -59,11 +59,11 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 
 - Comparison
 
-| |     CUHK-SYSU   | | PRW ||
+| |        | CUHK-SYSU|  | PRW |
 | ---- |  :----:  | :----:  | :----:  | :----:  |
 | Method |  mAP   | rank1  | mAP   | rank1  |
-| OIM[1] | [88.1](https://drive.google.com/file/d/1Im4o0d7hytno-aycSDPHgNkxnJN785v0/view?usp=sharing)  | 89.2 |
-| NAE[4] | [89.8](https://drive.google.com/file/d/1mCCEnvwQC8Ckn7ElIJFMGqvfZMD6MX1P/view?usp=sharing)  | 90.7 |
+| OIM [1] | [88.1](https://drive.google.com/file/d/1Im4o0d7hytno-aycSDPHgNkxnJN785v0/view?usp=sharing)  | 89.2 |
+| NAE [4] | [89.8](https://drive.google.com/file/d/1mCCEnvwQC8Ckn7ElIJFMGqvfZMD6MX1P/view?usp=sharing)  | 90.7 |
 | baseline | [90.0](https://drive.google.com/file/d/17ViFt0rFNXupSNri1DvEhSFpebtqa4Xl/view?usp=sharing) | 91.0 |
 
 The download link of the trained models are available in the table. Note that all the models are trained with image size of `600x1000`, the larger image size, e.g., `900x1500`, would yield better performance.

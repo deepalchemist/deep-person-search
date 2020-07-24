@@ -14,10 +14,10 @@ from lib.misc import visual as vis
 class nae(TwoStage):
     """
     CUDA_VISIBLE_DEVICES=0 python main.py \
-    --benchmark ssm --batch_size 5 \
+    --benchmark prw --batch_size 5 \
     --backbone nae --cls_type oim \
     --lr 0.003 --reid_lr 0.003 --uni_optim --warmup_epochs 1 --max_epoch 7 \
-    -dis --suffix "box_weight" \
+    --suffix ""
     """
 
     def name(self):
