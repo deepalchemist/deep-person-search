@@ -55,9 +55,9 @@ def train_one_epoch(engine, data_loader, logger, epoch, warm_up=-1):
         if cfg.display and total_iter % cfg.display_freq == 0:
             logger.plot_current_losses(losses, total_iter)
             # vis gt and roi boxes
-            # with torch.no_grad():
-            #     im_roi_gt = engine.get_current_visuals()
-            # logger.display_current_results(im_roi_gt, total_iter)
+            with torch.no_grad():
+                im_roi_gt = engine.get_current_visuals()
+            logger.display_current_results(im_roi_gt, total_iter)
 
     logger.msg('End of epoch %d / %d \t Time Taken: %.1f min' %
                (epoch, cfg.max_epoch - 1, (time.time() - epoch_start_time) / 60))

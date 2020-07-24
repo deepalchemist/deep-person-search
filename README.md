@@ -44,8 +44,9 @@ CUDA_VISIBLE_DEVICES=0 python main.py \
     --benchmark prw --batch_size 5 \
     --backbone bsl --in_level C5 --cls_type oim \
     --lr 0.003 --warmup_epochs 1 --max_epoch 7 \
-    -dis --suffix "" 
+    --suffix "" 
 ```
+`-dis` enable display (visualization), then `tensorboard --bind_all --logdir your_log_dir`, which shows the loss curves and the input image with proposals.
 
 - Evaluation
 
@@ -53,8 +54,22 @@ CUDA_VISIBLE_DEVICES=0 python main.py \
 CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
     --benchmark prw --eval_batch_size 5 \
     --backbone bsl --in_level C5 --cls_type oim \
-    --load_ckpt "path_to_your_checkpoint" \
+    --load_ckpt "absolute_path_to_your_checkpoint" \
 ```
+
+- Comparison
+
+
+| |     CUHK-SYSU   | | PRW ||
+| ---- |  :----:  | :----:  | :----:  | :----:  |
+| Method |  mAP   | rank1  | mAP   | rank1  |
+| OIM | [88.1]()  | 89.2 |
+| NAE | [89.8]()  | 90.7 |
+| baseline | [90.0](https://drive.google.com/file/d/17ViFt0rFNXupSNri1DvEhSFpebtqa4Xl/view?usp=sharing) | 91.0 |
+
+
+
+
 
 ### TODO
 - DistributedDataParallel

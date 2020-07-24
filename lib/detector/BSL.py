@@ -89,6 +89,7 @@ class BSL(nn.Module):
             roi_align, box_emb, box_predictor,
             *box_kwargs
         )
+        self.RCNN.cws = cws
 
         # ------- re-ID -------
         out_channels = 256
@@ -232,7 +233,7 @@ class BSL(nn.Module):
                 box_feats = box_feats.split([b.size(0) for b in boxes], dim=0)
             else:
                 boxes, scores, labels, box_feats = self.RCNN._postprocess_detections(
-                    class_logits, box_regression, proposals, images.image_sizes, box_feats, cws=False, mode="rcnn")
+                    class_logits, box_regression, proposals, images.image_sizes, box_feats, mode="rcnn")
 
             # One image one Dict
             for i in range(num_images):
@@ -272,7 +273,7 @@ class RCNN(BaseRoIHeads):
                                    score_thresh,
                                    nms_thresh,
                                    detections_per_img, )
-
+        self.cws = False
     def forward(self,
                 features,
                 proposals,
@@ -312,7 +313,6 @@ class RCNN(BaseRoIHeads):
                                 proposals,
                                 image_shapes,
                                 box_features,
-                                cws=False,
                                 mode="rcnn"):
         """
         class_logits: 2D tensor(n_roi_per_img*bs C)
@@ -330,7 +330,7 @@ class RCNN(BaseRoIHeads):
         pred_scores = F.softmax(class_logits, -1)
         pred_scores = pred_scores[:, 1:]
 
-        if cws:
+        if self.cws:
             box_features = box_features * pred_scores.view(-1, 1)  # CWS
         box_features = box_features.split(boxes_per_image, 0)
 

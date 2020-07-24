@@ -17,7 +17,7 @@ class bsl(TwoStage):
     # Single GPU Training
     CUDA_VISIBLE_DEVICES=0 python main.py \
     --benchmark prw --batch_size 5 \
-    --backbone bsl --cls_type oim \
+    --backbone bsl --in_level C5 --cls_type oim \
     --lr 0.003 --warmup_epochs 1 --max_epoch 7 \
     -dis --suffix "" \
     """
