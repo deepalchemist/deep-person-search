@@ -1,6 +1,6 @@
 import numpy as np
-from dps.data.ssm import ssm
-from dps.data.prw import prw
+from lib.data.ssm import ssm
+from lib.data.prw import prw
 
 __all__ = ['get_imdb']
 

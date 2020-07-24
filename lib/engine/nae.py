@@ -94,7 +94,6 @@ class nae(TwoStage):
                 self.optimizer['reid'], cfg.lr_policy, lr_decay, cfg)
             })
 
-
     def set_input(self, input):
         # images: list of raw tensor img (3 h w), 0-255, raw img w/o normalization, BGR used for caffe pre-trained model
         # targets：list of dict with keys: 'gt_pids' 'boxes' 'gt_classes'

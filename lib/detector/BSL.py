@@ -37,7 +37,7 @@ class BSL(nn.Module):
                  box_batch_size_per_image=512, box_positive_fraction=0.25,
                  bbox_reg_weights=None,
                  # Misc
-                 eval_gt=False, display=False,
+                 eval_gt=False, display=False, cws=False
                  ):
 
         super(BSL, self).__init__()
@@ -101,8 +101,8 @@ class BSL(nn.Module):
             out_ch=out_channels
         )
         reid_crit = nn.ModuleDict()
-        for name in in_level:
-            reid_crit[name] = CriterionReID(cls_type, out_channels, num_train_pids)
+        for name, in_ch in zip(in_level, in_ch_list):
+            reid_crit[name] = CriterionReID(cls_type, in_ch, num_train_pids)
 
         self.reid_head = ReIDHead(
             reid_emb,
@@ -432,7 +432,7 @@ class EmbedReID(nn.Module):
                  roi_align,
                  featmap_names=["C5"],
                  in_ch_list=[2048],
-                 out_ch=256
+                 out_ch=256,
                  ):
         super(EmbedReID, self).__init__()
         assert "C5" in featmap_names
@@ -442,15 +442,7 @@ class EmbedReID(nn.Module):
         # projectors
         self.projectors = nn.ModuleDict()
         for name, in_ch in zip(featmap_names, in_ch_list):
-            projector = nn.Sequential(
-                nn.Linear(in_ch, out_ch),
-                nn.BatchNorm1d(out_ch)
-            )
-            nn.init.normal_(projector[0].weight, std=0.01)
-            nn.init.normal_(projector[1].weight, std=0.01)
-            nn.init.constant_(projector[0].bias, 0)
-            nn.init.constant_(projector[1].bias, 0)
-            self.projectors[name] = projector
+            self.projectors[name] = nn.BatchNorm1d(in_ch)
 
         self.top = top_model
 

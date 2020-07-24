@@ -8,10 +8,7 @@ from scipy.sparse import csr_matrix
 from scipy.io import loadmat
 from sklearn.metrics import average_precision_score, precision_recall_curve
 
-from dps.data.imdb import imdb
-from dps.misc import util
-
-import torch
+from lib.data.imdb import imdb
 
 
 def _compute_iou(a, b):

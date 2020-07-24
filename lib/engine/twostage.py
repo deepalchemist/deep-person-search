@@ -64,9 +64,6 @@ class TwoStage(object):
         parser.add_argument('--box_fg_iou_thresh', default=0.5, type=float)
         parser.add_argument('--box_bg_iou_thresh', default=0.5, type=float)
         parser.add_argument('--bbox_reg_weights', default=None)
-        # Misc
-        parser.add_argument('--eval_gt', action='store_true', help='Test using ground truth bounding-box')
-        parser.add_argument("-dis", '--display', action='store_true')
 
         return parser
 
@@ -91,7 +88,7 @@ class TwoStage(object):
             box_batch_size_per_image=cfg.n_roi_per_img, box_positive_fraction=cfg.fg_fraction,
             bbox_reg_weights=cfg.bbox_reg_weights,
             # Misc
-            eval_gt=cfg.eval_gt, display=cfg.display,
+            eval_gt=cfg.eval_gt, display=cfg.display, cws=cfg.cws
         )
         return common_args
 

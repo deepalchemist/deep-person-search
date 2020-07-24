@@ -1,5 +1,5 @@
 """
-Copy from https://github.com/DeanChan/NAE4PS
+Modified from https://github.com/DeanChan/NAE4PS
 """
 from collections import OrderedDict
 
@@ -38,7 +38,7 @@ class NAE(nn.Module):
                  box_batch_size_per_image=512, box_positive_fraction=0.25,
                  bbox_reg_weights=None,
                  # Misc
-                 eval_gt=False, display=False,
+                 eval_gt=False, display=False, cws=False,
                  ):
 
         super(NAE, self).__init__()
@@ -102,6 +102,7 @@ class NAE(nn.Module):
             self.roi_align, feat_head, box_predictor,
             *box_kwargs
         )
+        self.roi_heads.cws = cws
 
         self.req_pid = -1 if cls_type == "oim" else 0
         self.reid_time = 0
@@ -182,6 +183,7 @@ class NormAwareRoiHeads(BaseRoIHeads):
         super(NormAwareRoiHeads, self).__init__(*args, **kwargs)
         self.embedding_head = embedding_head
         self.reid_loss = reid_loss
+        self.cws = False
 
     @property
     def feat_head(self):
@@ -220,14 +222,15 @@ class NormAwareRoiHeads(BaseRoIHeads):
                 norm_aware_rcnn_loss(class_logits, box_regression,
                                      labels, regression_targets)
 
-            loss_reid, _ = self.reid_loss(embeddings_, pids)
+            loss_reid, acc = self.reid_loss(embeddings_, pids)
 
             losses = dict(loss_classifier=loss_detection,
                           loss_box_reg=loss_box_reg,
                           loss_ide=loss_reid)
         else:
             boxes, scores, embeddings, labels = \
-                self._postprocess_detections(class_logits, box_regression, embeddings_, proposals, image_shapes)
+                self._postprocess_detections(class_logits, box_regression, embeddings_,
+                                             proposals, image_shapes)
             num_images = len(boxes)
             for i in range(num_images):
                 result.append(
@@ -240,14 +243,20 @@ class NormAwareRoiHeads(BaseRoIHeads):
                 )
         return result, losses
 
-    def _postprocess_detections(self, class_logits, box_regression, embeddings_, proposals, image_shapes):
+    def _postprocess_detections(self,
+                                class_logits,
+                                box_regression,
+                                embeddings_,
+                                proposals,
+                                image_shapes):
         device = class_logits.device
 
         boxes_per_image = [len(boxes_in_image) for boxes_in_image in proposals]
         pred_boxes = self.box_coder.decode(box_regression, proposals)
 
         pred_scores = torch.sigmoid(class_logits)
-        # embeddings_ = embeddings_ * pred_scores.view(-1, 1)  # CWS
+        if self.cws:
+            embeddings_ = embeddings_ * pred_scores.view(-1, 1)  # CWS
 
         # split boxes and scores per image
         pred_boxes = pred_boxes.split(boxes_per_image, 0)

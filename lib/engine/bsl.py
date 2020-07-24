@@ -16,7 +16,7 @@ class bsl(TwoStage):
     """
     # Single GPU Training
     CUDA_VISIBLE_DEVICES=0 python main.py \
-    --benchmark prw --batch_size 4 \
+    --benchmark prw --batch_size 5 \
     --backbone bsl --cls_type oim \
     --lr 0.003 --warmup_epochs 1 --max_epoch 7 \
     -dis --suffix "" \
@@ -31,7 +31,6 @@ class bsl(TwoStage):
         parser = TwoStage.modify_commandline_options(parser, is_test)
         # specific arguments
         parser.add_argument('--alpha', type=float, default=0.01, help='warm-up lower lr factor')
-        parser.add_argument('--cat_c4', action='store_true')
         parser.add_argument('--in_level', type=str, default=["C5"], nargs="+", help='in_level for re-ID')
         parser.add_argument('--cls_type', type=str, default='oim', help='type of classifier')
         parser.add_argument('--reid_lr', type=float, default=3.5e-4, help='lr of re-ID parameters')
@@ -79,13 +78,6 @@ class bsl(TwoStage):
             cls_type=cfg.cls_type, in_level=cfg.in_level,
             **common_kwargs
         )
-        # self.detector = BSL(
-        #     num_classes=2,
-        #     # re-ID
-        #     num_train_pids=cfg.num_train_ids,
-        #     cls_type=cfg.cls_type, cat_c4=cfg.cat_c4,
-        #     **common_kwargs
-        # )
 
         # shift network to device
         self.net_to_device()

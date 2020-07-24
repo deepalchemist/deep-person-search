@@ -3,7 +3,7 @@ import torch
 import argparse
 import datetime
 import shutil
-from dps.engine.getengine import get_config_setter
+from lib.engine.getengine import get_config_setter
 
 
 class BaseConfig(object):
@@ -16,78 +16,20 @@ class BaseConfig(object):
         #########
         parser.add_argument('--double_bias', action='store_true',
                             help='Whether to double the learning rate for bias')
-        parser.add_argument('--truncated', action='store_true',
-                            help='Whether to initialize the weights with truncated normal distribution')
         parser.add_argument('--bias_decay', action='store_true',
                             help='Whether to have weight decay on bias as well')
-        parser.add_argument('--use_gt', action='store_true',
-                            help='Whether to add ground truth boxes to the pool when sampling regions')
-        parser.add_argument('--aspect_grouping', action='store_true',
-                            help='Whether to use aspect-ratio grouping of training images, introduced merely for saving GPU memory')
-        parser.add_argument('--trim_size', type=int, default=[600, 600], nargs='+',
-                            help='Trim size for input images to create mini-batch, [height width]')
         parser.add_argument('--batch_size', type=int, default=2)
-
-        parser.add_argument('--fg_thresh', default=0.5, type=float,
-                            help='Overlap threshold for a ROI to be considered foreground (if >= FG_THRESH)')
-        parser.add_argument('--bg_thresh', type=float, default=[0.1, 0.5], nargs='+',
-                            help='Overlap threshold for a ROI to be considered background (class = 0 if overlap in [LOW, HIGH))')
         parser.add_argument('--no_flip', action='store_true',
                             help='Use horizontally-flipped images during training?')
-        parser.add_argument('--bbox_thresh', type=float, default=0.5,
-                            help='Overlap required between a ROI and ground-truth box in order for '
-                                 'that ROI to be used as a bounding-box regression training example')
-        parser.add_argument('--no_bbox_normalize_targets', action='store_true',
-                            help='Normalize the targets (subtract empirical mean, divide by empirical stddev)')
-        parser.add_argument('--bbox_inside_weights', type=float, default=[1.0, 1.0, 1.0, 1.0], nargs='+',
-                            help='Deprecated (inside weights)')
-        parser.add_argument('--no_bbox_normalize_target_precomputed', action='store_true',
-                            help='Normalize the targets using "precomputed" (or made up) means and stdevs (BBOX_NORMALIZE_TARGETS must also be True)')
-        parser.add_argument('--bbox_normalize_means', type=float, default=[0.0, 0.0, 0.0, 0.0], nargs='+')
-        parser.add_argument('--bbox_normalize_stds', type=float, default=[0.1, 0.1, 0.2, 0.2], nargs='+')
-        parser.add_argument('--proposal_method', default='gt', type=str,
-                            help='Train using these proposals')
-
-        parser.add_argument('--no_use_all_gt', action='store_true',
-                            help='Whether to use all ground truth bounding boxes for training')
-        parser.add_argument('--bn_train', action='store_true',
-                            help='Whether to tune the batch normalization parameters during training')
-
         ########
         # Test #
         ########
-        parser.add_argument('--no_bbox_reg', action='store_true',
-                            help='Test using bounding-box regress')
-        parser.add_argument('--eval_mode', default='nms', type=str,
-                            help="Testing mode, default to be 'nms', 'top' is slower but better")
         parser.add_argument('--gallery_size', type=int, default=100, choices=[-1, 50, 100, 500, 1000, 2000, 4000],
                             help='gallery size for evaluation, -1 for full set')
-        parser.add_argument('--eval_batch_size', default=4, type=int,
-                            help='Test stage Batch size')
-        ########
-        # Misc #
-        ########
-        parser.add_argument('--dedup_boxes', default=1. / 16., type=float,
-                            help='The mapping from image coordinates to feature map coordinates might cause '
-                                 'some boxes that are distinct in image space to become identical in feature '
-                                 'coordinates. If DEDUP_BOXES > 0, then DEDUP_BOXES is used as the scale factor '
-                                 'for identifying duplicate boxes.')
-        parser.add_argument('--seed', default=7, type=int)
-        parser.add_argument('--eps', default=1e-14, type=float,
-                            help="A small number that's used many times")
-        parser.add_argument('--pooling_mode', default='align', type=str)
-        parser.add_argument('--pooling_size', default=14, type=int)
-        parser.add_argument('--max_num_gt_bbox', default=20, type=int,
-                            help="Maximal number of gt rois in an image during Training")
-        parser.add_argument('--anchor_scales', type=int, default=[8, 16, 32], nargs='+',
-                            help='Anchor scales for RPN')
-        parser.add_argument('--anchor_ratios', type=float, default=[0.5, 1, 2], nargs='+',
-                            help='Anchor ratios for RPN')
-        parser.add_argument('--feat_stride', type=int, default=[16, ], nargs='+',
-                            help='Feature stride for RPN')
-        parser.add_argument('--no_crop_resize_with_max_pool', action='store_true')
-        parser.add_argument('--device', default='cuda', help='device')
-        parser.add_argument('--model_verbose', action='store_true', help='Print architecture of model')
+        parser.add_argument('--eval_batch_size', default=4, type=int, help='Test stage Batch size')
+        parser.add_argument('--eval_gt', action='store_true', help='Test using ground truth bounding-box')
+        parser.add_argument('--cws', action='store_true')
+
         ########
         # Data #
         ########
@@ -96,6 +38,18 @@ class BaseConfig(object):
         parser.add_argument('--n_batch_per_epoch', default=0, type=int)
         parser.add_argument('--div', action='store_true', help='Input image divides 255.')
         parser.add_argument('--RGB', action='store_true', help='Load image in RGB order for PyTorch pre-trained model.')
+        now = datetime.datetime.now()
+        parser.add_argument('--ckpt_dir', type=str, help='models are saved here',
+                            default=os.path.join('/mnt/data2/caffe/ckpt/person-search-pth/{}'.format(now.strftime("%Y%m%d"))))
+        ########
+        # Misc #
+        ########
+        parser.add_argument('--model_verbose', action='store_true', help='Print architecture of model')
+        parser.add_argument("-dis", '--display', action='store_true')
+        parser.add_argument('--seed', default=7, type=int)
+        parser.add_argument('--eps', default=1e-14, type=float, help="A small number that's used many times")
+        parser.add_argument('--device', default='cuda', help='device')
+
         self.initialized = True
         return parser
 
@@ -174,16 +128,12 @@ class Config(BaseConfig):
         parser.add_argument('--benchmark', type=str, default='prw')
         parser.add_argument('--backbone', type=str, default='bsl')
         parser.add_argument('--bg_aug', action='store_true', help="background augmentation")
-        parser.add_argument('--comb_mid', action='store_true')
         parser.add_argument('--clip_grad', action='store_true')
         parser.add_argument('--conv5_stride', type=int, default=2)
-        parser.add_argument('--continue_train', action='store_true',
-                            help='set current epoch to ckpt.epoch, current best_rank1 to ckpt.best_rank1, if continue training')
-        now = datetime.datetime.now()
-        parser.add_argument('--ckpt_dir', type=str, help='models are saved here',
-                            default=os.path.join('/mnt/data2/caffe/ckpt/person-search-pth/',
-                                                 '{}'.format(now.strftime("%Y%m%d"))))
-        parser.add_argument('--distill', type=str, default='', help="choose from (offline, online, and '')")
+        parser.add_argument('--continue_train', action='store_true', help=
+        'set current epoch to ckpt.epoch, current best_rank1 to ckpt.best_rank1, if continue training')
+
+
         parser.add_argument('--display_freq', default=5, type=int)
         parser.add_argument('--distributed', action='store_true')
         parser.add_argument('--logger', default=None, type=object)
@@ -196,7 +146,6 @@ class Config(BaseConfig):
         parser.add_argument("-ldm", '--lr_decay_milestones', default=[4], nargs='+', type=int,
                             help="multiply by a gamma every lr_decay_milestones iterations")
         parser.add_argument('--weight_decay', type=float, default=0.0001)  # 5e-4
-        parser.add_argument('--num_buf_layer', type=int, default=0)
         parser.add_argument('--start_epoch', type=int, default=0)
         parser.add_argument('--eval_epoch', default=[], nargs='+', type=int)
         parser.add_argument('--max_epoch', default=5, type=int)
@@ -217,16 +166,14 @@ class Config(BaseConfig):
 
         parser.add_argument('--id_sampler', action='store_true',
                             help='whether randomly sample identity')
-
         parser.add_argument('--freeze_top_bn', action='store_true',
                             help='whether fix batch_norm in the top layer of rcnn')
+
         # config optimization
-        parser.add_argument('--optim', default="sgd", type=str,
-                            help='training optimizer')
+        parser.add_argument('--optim', default="sgd", type=str, help='training optimizer')
 
         # resume trained model
-        parser.add_argument('--load_ckpt', type=str,
-                            default='')
+        parser.add_argument('--load_ckpt', type=str, default='')
 
         parser.add_argument('--is_test', action='store_true', help='training or test')
 

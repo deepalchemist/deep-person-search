@@ -25,9 +25,15 @@ implements the widely used baseline OIM [1], and NAE [4].
 conda env create -f environment.yml
 git clone https://github.com/DeepAlchemist/deep-person-search.git && cd deep-person-search
 ```
-    
+
 - Download [PRW](https://github.com/liangzheng06/PRW-baseline) and [CUHK-SYSU](https://github.com/ShuangLI59/person_search)
-to `path_to_your_data` and set `--data_root` to `path_to_your_data` in the config file.
+to `path_to_your_data`.
+
+- In the config file `./lib/cfg/config.py`, change `--data_root` to `path_to_your_data`, 
+`--ckpt_dir` to `path_you_want_to_save_the_checkpoints`.
+
+- Download ImageNet pre-trained ResNet models from [GoogleDrive](https://drive.google.com/drive/folders/1VEaUg1W79iDYtK8292D1_V99rZKDklop?usp=sharing)
+to `deep-person-search/cache/pretrained_model/`
 
 ### Training & Evaluation
 
@@ -53,6 +59,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 ### TODO
 - DistributedDataParallel
 - Trained model and performance
+- Training with larger image size, i.e., 900x1500
 - Supporting more SOTA methods
 - Visualizing ranking list in test
 - A technological report for this repository

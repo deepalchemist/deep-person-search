@@ -9,7 +9,7 @@ from scipy.io import loadmat
 from sklearn.metrics import average_precision_score, precision_recall_curve
 
 from tqdm import tqdm
-from dps.data.imdb import imdb
+from lib.data.imdb import imdb
 
 
 def compute_iou(box1, box2):

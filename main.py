@@ -13,13 +13,13 @@ import torch
 import torchvision.utils as vutils
 import torch.utils.data as data
 
-from dps.cfg.config import Config
-import dps.misc.util as util
-from dps.misc.sampler import collate_fn
-from dps.misc.logger import Logger
-import dps.data.getitem as getitem
-from dps.data.preproc import create_data
-from dps.engine.getengine import create_engine
+from lib.cfg.config import Config
+import lib.misc.util as util
+from lib.misc.sampler import collate_fn
+from lib.misc.logger import Logger
+import lib.data.getitem as getitem
+from lib.data.preproc import create_data
+from lib.engine.getengine import create_engine
 
 
 def train_one_epoch(engine, data_loader, logger, epoch, warm_up=-1):

@@ -7,8 +7,6 @@ import torch
 import torch.utils.data as data
 from torchvision.ops.boxes import clip_boxes_to_image
 
-import dps.misc.util as util
-
 
 class SequentialGetitem(data.Dataset):
 
