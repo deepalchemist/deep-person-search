@@ -68,10 +68,18 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 
 The download link of the [trained models](https://drive.google.com/drive/folders/1k5fUtsakAiDbJcfCbpnpgfHlZW-JYLCN?usp=sharing) are available in the table. Note that all the models are trained with image size of `600x1000`, the larger image size, e.g., `900x1500`, would yield better performance.
 
+<table>
+  <tr>
+    <td>One</td>
+    <td>Two</td>
+  </tr>
+  <tr>
+    <td colspan="2">Three</td>
+  </tr>
+</table>
 
 ### TODO
 - DistributedDataParallel
-- Trained model and performance on prw
 - Training with larger image size, i.e., 900x1500
 - Supporting more SOTA methods
 - Visualizing ranking list in test
