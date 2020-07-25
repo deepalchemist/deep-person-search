@@ -1,4 +1,4 @@
-## A PyTorch based strong baseline for Person search
+## A PyTorch based strong baseline for person search
 This repository develops a baseline model with high performance, and 
 implements the widely used baseline OIM [1], and NAE [4].
 
