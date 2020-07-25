@@ -538,6 +538,15 @@ class ReIDHead(torch.nn.Module):
         image_shapes (List[Tuple[H, W]])
         targets (List[Dict])
         """
+        if targets is not None:
+            for t in targets:
+                assert t["boxes"].dtype.is_floating_point, \
+                    'target boxes must of float type'
+                assert t["labels"].dtype == torch.int32, \
+                    'target labels must of int32 type'
+                assert t["pids"].dtype == torch.int64, \
+                    'target pids must of int64 type'
+
         num_images = len(proposals)
         result, reid_loss = {}, {}
 

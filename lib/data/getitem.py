@@ -47,8 +47,8 @@ class SequentialGetitem(data.Dataset):
 
         target = dict(
             boxes=gt_boxes,  # (num_boxes 4)
-            labels=torch.from_numpy(single_item['gt_classes']),
-            pids=torch.from_numpy(single_item['gt_pids']),
+            labels=torch.from_numpy(single_item['gt_classes']).int(),
+            pids=torch.from_numpy(single_item['gt_pids']).long(),
             img_name=single_item['img_name'],
         )
         if 'mask_path' in single_item:
