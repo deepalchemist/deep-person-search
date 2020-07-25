@@ -70,11 +70,15 @@ The download link of the [trained models](https://drive.google.com/drive/folders
 
 <table>
   <tr>
-    <td>One</td>
-    <td>Two</td>
+    <td colspan=2> CUHK-SYSU </td>
+    <td colspan=2>PRW</td>
   </tr>
   <tr>
-    <td colspan="2">Three</td>
+    <td >Method</td>
+    <td >mAP</td>
+    <td >rank1</td>
+    <td >mAP</td>
+    <td >rank1</td>
   </tr>
 </table>
 
