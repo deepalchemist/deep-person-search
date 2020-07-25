@@ -59,7 +59,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 
 - Comparison
 
-| | :  CUHK-SYSU   : || : PRW : ||
+| |    | CUHK-SYSU  |  | PRW |
 | ---- |  :----:  | :----:  | :----:  | :----:  |
 | Method |  mAP   | rank1  | mAP   | rank1  |
 | OIM [1] | [88.1](https://drive.google.com/file/d/1Im4o0d7hytno-aycSDPHgNkxnJN785v0/view?usp=sharing)  | 89.2 | [36.0](https://drive.google.com/file/d/1l7eKIwOYJxEopguMk_tl8bKQW0f83PJv/view?usp=sharing) | 76.7 |
