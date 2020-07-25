@@ -59,7 +59,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 
 - Comparison
 
-| |        | CUHK-SYSU|  | PRW |
+| | :  CUHK-SYSU   : || : PRW : ||
 | ---- |  :----:  | :----:  | :----:  | :----:  |
 | Method |  mAP   | rank1  | mAP   | rank1  |
 | OIM [1] | [88.1](https://drive.google.com/file/d/1Im4o0d7hytno-aycSDPHgNkxnJN785v0/view?usp=sharing)  | 89.2 | [36.0](https://drive.google.com/file/d/1l7eKIwOYJxEopguMk_tl8bKQW0f83PJv/view?usp=sharing) | 76.7 |
@@ -67,20 +67,6 @@ CUDA_VISIBLE_DEVICES=0 python main.py --is_test \
 | baseline | [90.0](https://drive.google.com/file/d/17ViFt0rFNXupSNri1DvEhSFpebtqa4Xl/view?usp=sharing) | 91.0 | [40.5](https://drive.google.com/file/d/1H3f2C5GplCxxsxtKgdtdzRsX9mincwC8/view?usp=sharing) | 81.3 |
 
 The download link of the [trained models](https://drive.google.com/drive/folders/1k5fUtsakAiDbJcfCbpnpgfHlZW-JYLCN?usp=sharing) are available in the table. Note that all the models are trained with image size of `600x1000`, the larger image size, e.g., `900x1500`, would yield better performance.
-
-<table>
-  <tr>
-    <td colspan=2> CUHK-SYSU </td>
-    <td colspan=2>PRW</td>
-  </tr>
-  <tr>
-    <td >Method</td>
-    <td >mAP</td>
-    <td >rank1</td>
-    <td >mAP</td>
-    <td >rank1</td>
-  </tr>
-</table>
 
 ### TODO
 - DistributedDataParallel
