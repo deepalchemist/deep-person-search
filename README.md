@@ -20,10 +20,10 @@ implements the widely used baseline OIM [1], and NAE [4].
 
 ### Preparation
 
-- Build environment and clone repository 
+- Clone repository build the environment 
 ```
-conda env create -f environment.yml
 git clone https://github.com/DeepAlchemist/deep-person-search.git && cd deep-person-search
+conda env create -f env.yml
 ```
 
 - Download [PRW](https://github.com/liangzheng06/PRW-baseline) and [CUHK-SYSU](https://github.com/ShuangLI59/person_search) (also named SSM)
