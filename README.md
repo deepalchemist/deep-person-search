@@ -4,7 +4,6 @@ implements the widely used baseline OIM [1], and NAE [4].
 
 - Separating detection and re-ID head on the top of model
 - PK sampling for training re-ID head 
-- Data Augmentation (paste the same person into different backgrounds)
 - Warm-up training 
 
 ### About this repository
@@ -20,7 +19,7 @@ implements the widely used baseline OIM [1], and NAE [4].
 
 ### Preparation
 
-- Clone repository build the environment 
+- Clone repository and build the environment 
 ```
 git clone https://github.com/DeepAlchemist/deep-person-search.git && cd deep-person-search
 conda env create -f env.yml
