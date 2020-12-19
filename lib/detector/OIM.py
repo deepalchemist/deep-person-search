@@ -203,17 +203,19 @@ class RoIHeads(BaseRoIHeads):
                     'target labels must of int32 type'
                 assert t["pids"].dtype == torch.int64, \
                     'target pids must of int64 type'
+        result, losses = {},{}
         if self.training:
             proposals, matched_idxs, labels, regression_targets, pids = \
                 self.select_training_samples(proposals, targets)
+            
+            result.update({"boxes": proposals, "pids":pids})
 
         roi_pooled_features = \
             self.box_roi_pool(features, proposals, image_shapes)
         rcnn_features = self.feat_head(roi_pooled_features)  # max_pooled c4 and c5 features
         class_logits, box_regression = self.box_predictor(rcnn_features['C5'])
         embeddings_ = self.embedding_head(rcnn_features)
-
-        result, losses = [], {}
+        
         if self.training:
             loss_detection, loss_box_reg = \
                 fastrcnn_loss(class_logits, box_regression,
@@ -224,6 +226,8 @@ class RoIHeads(BaseRoIHeads):
             losses = dict(loss_classifier=loss_detection,
                           loss_box_reg=loss_box_reg,
                           loss_ide=loss_reid)
+            
+            result.update({"acc": acc})
         else:
             boxes, scores, embeddings, labels = \
                 self._postprocess_detections(class_logits, box_regression, embeddings_,
