@@ -78,3 +78,18 @@ The download link of the [trained models](https://drive.google.com/drive/folders
 [2] Person Re-Identification in the Wild. In CVPR 2017.<br>
 [3] Query-guided End-to-End Person Search. In CVPR 2019.<br>
 [4] Norm-Aware Embedding for Efficient Person Search. In CVPR 2020.<br>
+
+### Citation
+
+```bibtex
+@article{yang2021bottom,
+  title={Bottom-up foreground-aware feature fusion for practical person search},
+  author={Yang, Wenjie and Huang, Houjing and Chen, Xiaotang and Huang, Kaiqi},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology},
+  volume={32},
+  number={1},
+  pages={262--274},
+  year={2021},
+  publisher={IEEE}
+}
+```
